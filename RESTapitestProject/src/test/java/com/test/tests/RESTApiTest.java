@@ -114,5 +114,49 @@ public class RESTApiTest extends TestBase {
 	}
 
 	
+//
+//	@Test
+//	public void jsonPath() {
+//		final String JSON = "{\n" + "\"lotto\":{\n" + " \"lottoId\":5,\n" + "}\n" + "}";
+//		JsonPath jsonPath = new JsonPath(JSON).setRoot("lotto");
+//
+//		Assert.assertEquals(jsonPath.getInt("lottoId"), equals(5));
+//	}
 
+	
+	private JSONObject getApiResponce(String restAPIUrl, String body) {
+		RequestSpecBuilder builder = new RequestSpecBuilder();
+		// JSONObject jb = null;
+		JSONObject jSONResponseBody = null;
+
+		try {
+			// Set API's Body
+			builder.setBody(body);
+
+			// Setting content type as application/json
+			builder.setContentType("application/json; charset=UTF-8");
+			RequestSpecification requestSpec = builder.build();
+			Response response = RestAssured.given().authentication().preemptive().basic("", "").spec(requestSpec).when()
+					.post(restAPIUrl);
+			
+			// RestAssured.get(restAPIUrl).then().assertThat().body(response.body(),
+			// hasIt)
+			// RestAssured.with().parameters(parametersMap)
+			// RestAssured.given().cookie(cookie)
+			// RestAssured.given().header(header)
+			// RestAssured.)
+			// RestAssured.given().contentType(contentType)
+			
+			
+			jSONResponseBody = new JSONObject(response.body().asString());
+
+			System.out.println("response = " + response);
+			System.out.println("JSONResponseBody = " + jSONResponseBody);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return jSONResponseBody;
+	}
 }
